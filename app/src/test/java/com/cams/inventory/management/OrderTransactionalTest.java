@@ -10,6 +10,7 @@ import com.cams.inventory.management.request.OrderRequest;
 import com.cams.inventory.management.request.ProductItemRequest;
 import com.cams.inventory.management.service.order.OrderService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ class OrderTransactionalTest {
      * Ensures that the stock is reduced correctly and the order is saved.
      */
     @Test
+    @DisplayName("Test Create Order Success - Verifies successful order creation")
     void testCreateOrder_successAndStockUpdated() {
         //Create and save a product with initial stock
         ProductEntity product = new ProductEntity();
@@ -86,7 +88,8 @@ class OrderTransactionalTest {
      * Ensures that the transaction is rolled back and no changes are persisted.
      */
     @Test
-        void testCreateOrder_insufficientStock_rollback() {
+    @DisplayName("Test Create Order Failure - Simulates rollback behavior when service returns null")
+    void testCreateOrder_insufficientStock_rollback() {
 
         //Create and save a product with limited stock
         ProductEntity product = new ProductEntity();

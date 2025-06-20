@@ -8,6 +8,7 @@ import com.cams.inventory.management.mapper.OrderMapper;
 import com.cams.inventory.management.service.order.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -87,6 +88,7 @@ class OrderServiceImplTest {
      * Asserts that the returned OrderDto is not null and has the expected status.
      */
     @Test
+    @DisplayName("Update order status - success, should update the order status to COMPLETED")
     void testUpdateOrderStatus_success() {
 
         Mockito.when(orderDao.getOrderDetails(orderId)).thenReturn(Optional.of(orderEntity));
@@ -105,6 +107,7 @@ class OrderServiceImplTest {
      * Asserts that the returned OrderDto is null and no interactions with the DAO or Mapper occur.
      */
     @Test
+    @DisplayName("Update order status - failure, should return null when order does not exist")
     void testUpdateOrderStatus_failure() {
 
         Mockito.when(orderDao.getOrderDetails(orderId)).thenReturn(Optional.empty());

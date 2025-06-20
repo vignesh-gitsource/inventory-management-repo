@@ -8,6 +8,7 @@ import com.cams.inventory.management.mapper.ProductMapper;
 import com.cams.inventory.management.repository.product.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -82,6 +83,7 @@ class ProductDaoImplTest {
      * Tests the successful retrieval of products by SKU.
      */
     @Test
+    @DisplayName("Test for checking product existence with skus - success, should return a list of products by sku")
     void testGetProductsBySku_success() {
         List<String> skuIds = List.of("4321098");
 
@@ -98,6 +100,7 @@ class ProductDaoImplTest {
      * Tests the failure scenario when retrieving products by SKU throws an exception.
      */
     @Test
+    @DisplayName("Test for checking product existence with skus - failure, should throw InventoryManagementDBException when order creation fails")
     void testGetProductsBySku_failure() {
         List<String> skuIds = List.of("4321098");
 
@@ -111,6 +114,7 @@ class ProductDaoImplTest {
      * Tests the successful retrieval of low-stock products.
      */
     @Test
+    @DisplayName("Test for get low stock products - success, should return a list of products less than stock threshold")
     void testGetLowStockProducts_success() {
         Mockito.when(productMapper.transformProductEntityListToProductDtoList(List.of(productEntity))).thenReturn(List.of(productDto));
         Mockito.when(productRepository.findAll()).thenReturn(List.of(productEntity));
@@ -123,6 +127,7 @@ class ProductDaoImplTest {
      * Tests the failure scenario when retrieving low-stock products throws an exception.
      */
     @Test
+    @DisplayName("Test for get low stock products - failure, should throw InventoryManagementDBException when order creation fails")
     void testGetLowStockProducts_failure() {
         Mockito.when(productRepository.findAll()).thenThrow(new RuntimeException("Database error"));
         Assertions.assertThrows(InventoryManagementDBException.class, () -> {
@@ -134,6 +139,7 @@ class ProductDaoImplTest {
      * Tests the successful retrieval of a product by its ID.
      */
     @Test
+    @DisplayName("Test for product existence - success, should return the specified product")
     void testFindById_success() {
         Mockito.when(productRepository.findById(productId)).thenReturn(Optional.of(productEntity));
         Optional<ProductEntity> result = productDaoImpl.findById(productId);
@@ -145,6 +151,7 @@ class ProductDaoImplTest {
      * Tests the failure scenario when retrieving a product by its ID throws an exception.
      */
     @Test
+    @DisplayName("Test for product existence - failure, should throw InventoryManagementDBException when order creation fails")
     void testFindById_failure() {
         Mockito.when(productRepository.findById(productId)).thenThrow(new RuntimeException("Database error"));
         Assertions.assertThrows(InventoryManagementDBException.class, () -> {

@@ -10,6 +10,7 @@ import com.cams.inventory.management.request.ProductDetailsRequest;
 import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.service.product.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -53,6 +54,7 @@ class ProductServiceImplTest {
      * It checks if the method correctly identifies products with stock below a specified threshold.
      */
     @Test
+    @DisplayName("Retrieve products with stock below the specified threshold")
     void testGetLowStockProducts(){
 
         List<ProductDto> products = List.of(
@@ -74,6 +76,7 @@ class ProductServiceImplTest {
      * It checks if the method correctly summarizes the total quantity of products ordered.
      */
     @Test
+    @DisplayName("Summarize product details based on order details requests")
     void testProductSummaryDetails(){
 
         ProductDetailsRequest apple = new ProductDetailsRequest(String.valueOf(UUID.randomUUID()), "Apple", "173546", BigDecimal.valueOf(10), 50);
@@ -101,6 +104,7 @@ class ProductServiceImplTest {
      * It checks if the method correctly creates products and handles existing SKUs.
      */
     @Test
+    @DisplayName("Create products test - with no existing SKUs")
     void testCreateProduct_success(){
 
        List<ProductRequest> productRequestList =  List.of(new ProductRequest("Apple", "173546", BigDecimal.valueOf(10), 50),
@@ -127,6 +131,7 @@ class ProductServiceImplTest {
      * It checks if the method correctly identifies existing SKUs and returns appropriate results.
      */
     @Test
+    @DisplayName("Create products test - with one existing SKUs")
     void testCreateProduct_withExistingSku(){
 
         List<ProductRequest> productRequestList =  List.of(new ProductRequest("Apple", "173546", BigDecimal.valueOf(10), 50),
@@ -150,6 +155,7 @@ class ProductServiceImplTest {
      * It checks if the method correctly identifies existing SKUs and returns appropriate results.
      */
     @Test
+    @DisplayName("Create products test - with all SKUs present in db")
     void testCreateProduct_failure(){
 
         List<ProductRequest> productRequestList =  List.of(new ProductRequest("Apple", "173546", BigDecimal.valueOf(10), 50),

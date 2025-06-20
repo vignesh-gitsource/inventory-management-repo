@@ -8,6 +8,7 @@ import com.cams.inventory.management.request.ProductItemRequest;
 import com.cams.inventory.management.response.ApiResponse;
 import com.cams.inventory.management.service.order.OrderService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,6 +47,7 @@ class OrderControllerTest {
      * Verifies that the method successfully updates the order status when valid inputs are provided.
      */
     @Test
+    @DisplayName("Test Update Order Status Success - Verifies successful update of order status")
     void testUpdateOrderStatus_success() {
 
         // Generate a random UUID for the order ID
@@ -82,6 +84,7 @@ class OrderControllerTest {
      * Verifies that the method handles failure scenarios correctly when the service returns null.
      */
     @Test
+    @DisplayName("Test Update Order Status Failure - Verifies behavior when service returns null")
     void testUpdateOrderStatus_failure() {
 
         // Generate a random UUID for the order ID
@@ -114,6 +117,7 @@ class OrderControllerTest {
      * Verifies that the method successfully creates an order when valid inputs are provided.
      */
     @Test
+    @DisplayName("Test Create Order Success - Verifies successful order creation")
     void testCreateOrder_success() {
 
         // Create a mock product item request
@@ -161,6 +165,7 @@ class OrderControllerTest {
      * Verifies that the method handles failure scenarios correctly when the service returns null.
      */
     @Test
+    @DisplayName("Test Create Order Failure - Verifies behavior when service returns null")
     void testCreateOrder_failure() {
 
         // Create a mock product item request

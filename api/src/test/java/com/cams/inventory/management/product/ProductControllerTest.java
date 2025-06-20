@@ -6,6 +6,7 @@ import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.response.ApiResponse;
 import com.cams.inventory.management.service.product.ProductService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -45,6 +46,7 @@ class ProductControllerTest {
      * Verifies that the method successfully creates a product when valid inputs are provided.
      */
     @Test
+    @DisplayName("Create Product - Success")
     void testCreateProduct_success() {
 
         // Create a mock product request
@@ -128,6 +130,7 @@ class ProductControllerTest {
      * Verifies that the method successfully retrieves products with low stock.
      */
     @Test
+    @DisplayName("Retrieve products with stock below the specified threshold - Success")
     void testLowStockProducts_success() {
 
         // Create a mock product DTO to simulate a low-stock product
@@ -161,6 +164,7 @@ class ProductControllerTest {
      * Verifies that the method handles failure scenarios correctly when no products are found.
      */
     @Test
+    @DisplayName("Retrieve products with stock below the specified threshold - Failure")
     void testLowStockProducts_failure() {
 
         // Mock the behavior of the productService to return an empty list
@@ -185,6 +189,7 @@ class ProductControllerTest {
      * Verifies that the method successfully retrieves product summary details.
      */
     @Test
+    @DisplayName("Summarize product details based on order details requests - Success")
     void testProductSummaryDetails_success() {
 
         // Mock the behavior of the productService to return product summary details
@@ -214,6 +219,7 @@ class ProductControllerTest {
      * Verifies that the method handles failure scenarios correctly when no summary details are found.
      */
     @Test
+    @DisplayName("Summarize product details based on order details requests - failure")
     void testProductSummaryDetails_failure() {
 
         // Mock the behavior of the productService to return an empty map

@@ -7,6 +7,7 @@ import com.cams.inventory.management.handler.InventoryManagementDBException;
 import com.cams.inventory.management.repository.order.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,6 +56,7 @@ class OrderDaoImplTest {
      * Tests the successful creation of an order.
      */
     @Test
+    @DisplayName("Create order and return completed status")
     void testCreateOrder_success() {
         Mockito.when(orderRepository.save(orderEntity)).thenReturn(orderEntity);
         OrderEntity result = orderDaoImpl.createOrder(orderEntity);
@@ -66,6 +68,7 @@ class OrderDaoImplTest {
      * Tests the failure scenario when creating an order throws an exception.
      */
     @Test
+    @DisplayName("Create order - failure, should throw InventoryManagementDBException when order creation fails")
     void testCreateOrder_failure() {
         Mockito.when(orderRepository.save(orderEntity)).thenThrow(new RuntimeException("Error while saving order"));
         Assertions.assertThrows(InventoryManagementDBException.class, () ->
@@ -76,6 +79,7 @@ class OrderDaoImplTest {
      * Tests the successful retrieval of order details by ID.
      */
     @Test
+    @DisplayName("Get order details - Success")
     void testGetOrderDetails_success() {
         UUID orderId = UUID.randomUUID();
         Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(orderEntity));
@@ -88,6 +92,7 @@ class OrderDaoImplTest {
      * Tests the failure scenario when retrieving order details throws an exception.
      */
     @Test
+    @DisplayName("Get order details - failure, should throw InventoryManagementDBException when order creation fails")
     void testGetOrderDetails_failure() {
         UUID orderId = UUID.randomUUID();
         Mockito.when(orderRepository.findById(orderId)).thenThrow(new RuntimeException("Error while saving order"));
