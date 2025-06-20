@@ -3,6 +3,9 @@ package com.cams.inventory.management.entity.order;
 import com.cams.inventory.management.entity.constant.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,4 +38,11 @@ public class OrderEntity {
      */
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItemEntity> items = new ArrayList<>();
+
+    /**
+     * The timestamp indicating when the order was created.
+     * This value is automatically populated when the order is persisted.
+     */
+    @CreationTimestamp
+    private LocalDateTime orderCreatedDate;
 }

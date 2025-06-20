@@ -93,6 +93,15 @@ public class OrderServiceImpl implements OrderService {
                 throw new InsufficientStockException("Insufficient stock for product: " + productEntity.getName());
             }
 
+            //This block of commented code is to test the concurrent updates to same product entity.
+//
+//            // Introduce artificial delay here
+//            try {
+//                Thread.sleep(5000); // 5 seconds
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            }
+
             // Update stock on the managed entity
             productEntity.setStock(productEntity.getStock() - orderItem.getQuantity());
 

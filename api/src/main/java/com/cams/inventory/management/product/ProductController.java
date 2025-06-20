@@ -78,6 +78,7 @@ public class ProductController {
      * @param stockThreshold the stock level threshold to filter low-stock products
      * @return an ApiResponse containing a list of low-stock products and a success flag
      */
+    @GetMapping("/v1/low-stock-products")
     public ApiResponse<String, List<ProductDto>> getLowStockProducts(@RequestParam int stockThreshold) {
         log.info("Fetching products with stock below threshold: {}", stockThreshold); // Log the stock threshold being used
 

@@ -1,10 +1,12 @@
 package com.cams.inventory.management.handler;
 
 import com.cams.inventory.management.response.ApiResponse;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -134,6 +136,22 @@ public class InventoryManagementControllerAdvice extends ResponseEntityException
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Handles optimistic locking failure exceptions.
+     * This exception occurs when a concurrent update to a resource causes a conflict.
+     *
+     * @param ex the exception thrown when an optimistic locking conflict occurs
+     * @return a ResponseEntity containing an ApiResponse with error details and a conflict status
+     */
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+    protected ResponseEntity<Object> objectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException ex) {
+        ApiResponse<String, List<Object>> apiResponse = ApiResponse.<String, List<Object>>builder()
+                .success(false)
+                .message("Conflict occurred: The product was modified by another request. Please try again.")
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.CONFLICT);
     }
 
     /**
