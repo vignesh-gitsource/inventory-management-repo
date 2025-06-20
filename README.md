@@ -54,49 +54,56 @@ inventory-management-system
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/api/
 │       │   ├── controller/
-│       │   └── dto/
 │       └── test/java/com/cams/inventory/management/api/
 │           └── controller/
 │
 ├── app/                           # Main application launcher (Spring Boot entry point)
 │   ├── pom.xml
 │   └── src/
-│       ├── main/java/com/cams/inventory/management/app/
-│       │   └── InventoryManagementApplication.java
+│       ├── main/
+│       │   ├── java/com/cams/inventory/management/app/
+│       │   │   └── InventoryManagementApplication.java
+│       │   └── resources/
+│       │       ├── application.properties
+│       │       └── import.sql
 │       └── test/java/com/cams/inventory/management/app/
+│          
 │
 ├── client/                        # HTTP/Feign clients (e.g., for external services)
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/client/
+│       │   └── request/
 │       └── test/java/com/cams/inventory/management/client/
 │
 ├── db/                           # Database schema, migration, initial data
 │   ├── pom.xml
 │   └── src/
-│       └── main/resources/
-│           ├── schema.sql
-│           └── import.sql
+│       ├── main/
+│       │   ├── java/com/cams/inventory/management/db/
+│       │   │   ├── dao/
+│       │   │   ├── dto/
+│       │   │   ├── entity/
+│       │   │   ├── mapper/
+│       │   │   └── repository/
+│       └── test/
+│           └── java/com/cams/inventory/management/db/
+│               ├── dao/
 │
 ├── domain/                       # Business logic, services, entities, repositories
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/domain/
-│       │   ├── model/             # JPA entities
-│       │   ├── repository/        # Spring Data JPA repositories
 │       │   ├── service/           # Business services
-│       │   └── mapper/            # Optional: MapStruct mappers
 │       └── test/java/com/cams/inventory/management/domain/
 │           ├── service/
-│           └── repository/
 │
 ├── exception/                   # Common exception classes and handlers
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/exception/
-│       │   ├── InsufficientStockException.java
-│       │   ├── ResourceNotFoundException.java
-│       │   └── GlobalExceptionHandler.java
+│       │   ├── handler/
+│       │   ├── response/
 │       └── test/java/com/cams/inventory/management/exception/
 
 
