@@ -1,6 +1,6 @@
-# 🛒 Order Management Service
+# 🛒 Inventory Management Service
 
-This is a Spring Boot-based backend service for managing orders and products in an e-commerce system.
+This is a Spring Boot-based backend service for managing inventory for orders and products in an e-commerce system.
 
 ## 🚀 Features
 
