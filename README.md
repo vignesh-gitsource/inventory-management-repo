@@ -1,50 +1,49 @@
-# 🛒 Inventory Management Service
+# Inventory Management Service
 
 This is a Spring Boot-based backend service for managing inventory for orders and products in an e-commerce system.
 
-## 🚀 Features
+## Features
 
-- Create and manage orders
+- Create and manage orders and products
 - Product stock validation with transactional rollback
 - RESTful API design
 - JPA/Hibernate integration
 - Custom exception handling
 - Database schema initialization using `import.sql`
-- Unit and integration testing with JUnit
+- Unit JUnit
 
 ---
 
-## 📦 Tech Stack
+## Tech Stack
 
 - Java 17+
 - Spring Boot
 - Spring Data JPA
 - H2 / PostgreSQL / MySQL (configurable)
-- Maven / Gradle
+- Maven
 - JUnit 5
 - Lombok
 - MapStruct (if used)
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Java 17+
-- Maven or Gradle
-- (Optional) Docker (for DB or deployment)
+- Maven
 
 ### Clone the Repository
+- git clone https://github.com/vignesh-gitsource/inventory-management-repo.git
 
-```bash
-git clone https://github.com/vignesh-gitsource/inventory-management-repo.git
+### Access database
+- http://localhost:8088/h2-console
+- Use the jdbc url : spring.datasource.url=jdbc:h2:mem:inventorydb;
 
-**### Access database**
-  - http://localhost:8088/h2-console
-  - Use the jdbc url : spring.datasource.url=jdbc:h2:mem:inventorydb;
 
-**### Project Structure**
+### Project Structure
+<pre>
 inventory-management-system
 │
 ├── pom.xml                        # Root POM for multi-module build
@@ -72,14 +71,14 @@ inventory-management-system
 │       ├── main/java/com/cams/inventory/management/client/
 │       └── test/java/com/cams/inventory/management/client/
 │
-├── db/                            # Database schema, migration, initial data
+├── db/                           # Database schema, migration, initial data
 │   ├── pom.xml
 │   └── src/
 │       └── main/resources/
 │           ├── schema.sql
-│           ├── import.sql
+│           └── import.sql
 │
-├── domain/                        # Business logic, services, entities, repositories
+├── domain/                       # Business logic, services, entities, repositories
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/domain/
@@ -91,7 +90,7 @@ inventory-management-system
 │           ├── service/
 │           └── repository/
 │
-├── exception/                     # Common exception classes and handlers
+├── exception/                   # Common exception classes and handlers
 │   ├── pom.xml
 │   └── src/
 │       ├── main/java/com/cams/inventory/management/exception/
@@ -100,6 +99,10 @@ inventory-management-system
 │       │   └── GlobalExceptionHandler.java
 │       └── test/java/com/cams/inventory/management/exception/
 
-**### Access endpoints using swagger**
-  -http://localhost:8088/api/swagger-ui/index.html
 
+</pre>
+### Access endpoints using swagger
+-http://localhost:8088/api/swagger-ui/index.html
+
+```bash
+  
