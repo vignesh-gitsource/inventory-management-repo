@@ -4,6 +4,9 @@ import com.cams.inventory.management.dao.order.OrderDao;
 import com.cams.inventory.management.dto.OrderDto;
 import com.cams.inventory.management.entity.constant.OrderStatus;
 import com.cams.inventory.management.entity.order.OrderEntity;
+import com.cams.inventory.management.entity.order.OrderItemEntity;
+import com.cams.inventory.management.entity.product.ProductEntity;
+import com.cams.inventory.management.handler.ResourceNotFoundException;
 import com.cams.inventory.management.mapper.OrderMapper;
 import com.cams.inventory.management.service.order.impl.OrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -16,6 +19,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -73,9 +79,20 @@ class OrderServiceImplTest {
     @BeforeEach
     void setUp() {
 
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setSku("SKU123");
+        productEntity.setName("Apple");
+        productEntity.setStock(10);
+        productEntity.setPrice(new BigDecimal("100"));
+
+        OrderItemEntity orderItemEntity = new OrderItemEntity();
+        orderItemEntity.setId(UUID.randomUUID());
+        orderItemEntity.setProduct(productEntity);
+        orderItemEntity.setQuantity(10);
         orderEntity = new OrderEntity();
         orderEntity.setId(orderId);
         orderEntity.setStatus(OrderStatus.PENDING);
+        orderEntity.setItems(List.of(orderItemEntity));
 
         orderDto = new OrderDto();
         orderDto.setId(orderId.toString());
@@ -117,5 +134,37 @@ class OrderServiceImplTest {
         Assertions.assertNull(result);
         Mockito.verify(orderDao, Mockito.times(0)).createOrder(orderEntity);
         Mockito.verify(orderMapper, Mockito.times(0)).transformOrderEntityToOrderDto(Mockito.any());
+    }
+
+    /**
+     * Tests the product summary details.
+     * It checks if the method correctly summarizes the total quantity of products ordered.
+     */
+    @Test
+    @DisplayName("Summarize product details based on order id - Success")
+    void testProductSummaryDetails_success(){
+
+        UUID orderId = UUID.randomUUID();
+
+        Mockito.when(orderDao.getOrderDetails(orderId)).thenReturn(Optional.of(orderEntity));
+        Map<String, BigDecimal> productSummaryResults = orderServiceImpl.getProductSummaryDetails(orderId);
+
+        Assertions.assertEquals(1, productSummaryResults.size());
+        Assertions.assertEquals(BigDecimal.valueOf(1000), productSummaryResults.get("Apple"));
+    }
+
+    /**
+     * Tests the failure scenario for summarizing product details based on order ID.
+     * It verifies that a ResourceNotFoundException is thrown when the order does not exist.
+     */
+    @Test
+    @DisplayName("Summarize product details based on order id - Failure")
+    void testProductSummaryDetails_failure(){
+        UUID orderId = UUID.randomUUID();
+
+        Mockito.when(orderDao.getOrderDetails(orderId)).thenReturn(Optional.empty());
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            orderServiceImpl.getProductSummaryDetails(orderId);
+        });
     }
 }

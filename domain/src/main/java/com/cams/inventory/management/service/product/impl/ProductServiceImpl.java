@@ -3,7 +3,6 @@ package com.cams.inventory.management.service.product.impl;
 import com.cams.inventory.management.dao.product.ProductDao;
 import com.cams.inventory.management.dto.ProductDto;
 import com.cams.inventory.management.mapper.ProductMapper;
-import com.cams.inventory.management.request.OrderDetailsRequest;
 import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.service.product.ProductService;
 import org.slf4j.Logger;
@@ -12,10 +11,8 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -125,25 +122,5 @@ public class ProductServiceImpl implements ProductService {
         return productsList.stream()
                 .filter(p -> p.getStock() < stockThreshold)
                 .toList();
-    }
-
-    /**
-     * Retrieves a summary of product details based on the provided order details requests.
-     *
-     * @param orderDetailsRequests List of order details requests to calculate the product summary.
-     * @return A map where the key is the product identifier and the value is the total amount for that product.
-     */
-    @Override
-    public Map<String, BigDecimal> getProductSummaryDetails(List<OrderDetailsRequest> orderDetailsRequests) {
-
-        logger.debug("Calculating product summary details from order details requests: {}", orderDetailsRequests);
-
-        // Filter out order details requests that do not have items and then group by product name
-        return orderDetailsRequests.stream()
-                .filter(orderDetailsRequest -> orderDetailsRequest.getItems() != null)
-                .flatMap(orderDetailsRequest -> orderDetailsRequest.getItems().stream())
-                .collect(Collectors.groupingBy(item -> item.getProduct().getName(),
-                        Collectors.reducing(BigDecimal.ZERO, item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
-                                BigDecimal::add)));
     }
 }

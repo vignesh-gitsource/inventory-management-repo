@@ -1,7 +1,6 @@
 package com.cams.inventory.management.product;
 
 import com.cams.inventory.management.dto.ProductDto;
-import com.cams.inventory.management.request.OrderDetailsRequest;
 import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.response.ApiResponse;
 import com.cams.inventory.management.service.product.ProductService;
@@ -182,62 +181,5 @@ class ProductControllerTest {
         Assertions.assertFalse(response.getErrors().isEmpty());
         // Assert that the error message matches the expected value
         Assertions.assertEquals("No products found with the given stock threshold", response.getErrors().get(0));
-    }
-
-    /**
-     * Test case for the `getProductSummaryDetails` method in `ProductController`.
-     * Verifies that the method successfully retrieves product summary details.
-     */
-    @Test
-    @DisplayName("Summarize product details based on order details requests - Success")
-    void testProductSummaryDetails_success() {
-
-        // Mock the behavior of the productService to return product summary details
-        Mockito.when(productService.getProductSummaryDetails(List.of(new OrderDetailsRequest())))
-                .thenReturn(new HashMap<>(Map.of(
-                        "Apple", new BigDecimal("100.00")
-                )));
-
-        // Call the controller method and capture the response
-        ApiResponse<String, Map<String, BigDecimal>> response = productController
-                .getProductSummaryDetails(List.of(new OrderDetailsRequest()));
-
-        // Assert that the response is not null
-        Assertions.assertNotNull(response);
-        // Assert that the response contains data
-        Assertions.assertFalse(ObjectUtils.isEmpty(response));
-        // Assert that the response contains one product summary
-        Assertions.assertEquals(1, response.getData().size());
-        // Assert that the response contains no errors
-        Assertions.assertNull(response.getErrors());
-        // Assert that the product price matches the expected value
-        Assertions.assertEquals("100.00", response.getData().get("Apple").toString());
-    }
-
-    /**
-     * Test case for the `getProductSummaryDetails` method in `ProductController`.
-     * Verifies that the method handles failure scenarios correctly when no summary details are found.
-     */
-    @Test
-    @DisplayName("Summarize product details based on order details requests - failure")
-    void testProductSummaryDetails_failure() {
-
-        // Mock the behavior of the productService to return an empty map
-        Mockito.when(productService.getProductSummaryDetails(List.of(new OrderDetailsRequest())))
-                .thenReturn(new HashMap<>());
-
-        // Call the controller method and capture the response
-        ApiResponse<String, Map<String, BigDecimal>> response = productController
-                .getProductSummaryDetails(Collections.emptyList());
-
-        // Assert that the response is not null
-        Assertions.assertNotNull(response);
-        // Assert that the response contains no data
-        Assertions.assertFalse(ObjectUtils.isEmpty(response));
-        Assertions.assertNull(response.getData());
-        // Assert that the response contains error messages
-        Assertions.assertFalse(response.getErrors().isEmpty());
-        // Assert that the error message matches the expected value
-        Assertions.assertEquals("No product summary found for the given orders", response.getErrors().get(0));
     }
 }

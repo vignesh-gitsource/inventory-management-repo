@@ -11,11 +11,11 @@ INSERT INTO product_entity (id, name, sku, price, version, stock) VALUES ('a1d8c
 INSERT INTO product_entity (id, name, sku, price, version, stock) VALUES ('45d3c691-8a54-4f0c-85c2-1e3882c8a7b6', 'Jackfruit', 'SKU-JACKFRUIT', 1.80, 0, 70);
 
 -- Orders
-INSERT INTO order_entity (id, status) VALUES ('56e8b2e3-984c-4c0e-9d48-2d3c63d8e05f', 'PENDING');
-INSERT INTO order_entity (id, status) VALUES ('abd7e381-9f7a-4b2f-8c44-24a4ea4eb772', 'PENDING');
-INSERT INTO order_entity (id, status) VALUES ('62f71b1f-bf72-4846-9db0-2cc5cb13b615', 'PENDING');
-INSERT INTO order_entity (id, status) VALUES ('94e1c684-7012-4d19-9c5b-8d5e1f9a5ca9', 'PENDING');
-INSERT INTO order_entity (id, status) VALUES ('2b7d1e89-83e2-44f6-a3b0-8f69d16b7a62', 'PENDING');
+INSERT INTO order_entity (id, status) VALUES ('56e8b2e3-984c-4c0e-9d48-2d3c63d8e05f', 'COMPLETED');
+INSERT INTO order_entity (id, status) VALUES ('abd7e381-9f7a-4b2f-8c44-24a4ea4eb772', 'COMPLETED');
+INSERT INTO order_entity (id, status) VALUES ('62f71b1f-bf72-4846-9db0-2cc5cb13b615', 'COMPLETED');
+INSERT INTO order_entity (id, status) VALUES ('94e1c684-7012-4d19-9c5b-8d5e1f9a5ca9', 'COMPLETED');
+INSERT INTO order_entity (id, status) VALUES ('2b7d1e89-83e2-44f6-a3b0-8f69d16b7a62', 'COMPLETED');
 
 -- Order Items
 INSERT INTO order_item_entity (id, order_id, product_id, quantity) VALUES ('aa66aabe-cc34-4e16-870a-3e0a45d87ed9', '56e8b2e3-984c-4c0e-9d48-2d3c63d8e05f', 'd290f1ee-6c54-4b01-90e6-d701748f0851', 10);

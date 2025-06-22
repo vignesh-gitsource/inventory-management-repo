@@ -2,11 +2,7 @@ package com.cams.inventory.management.product;
 
 import com.cams.inventory.management.dao.product.ProductDao;
 import com.cams.inventory.management.dto.ProductDto;
-import com.cams.inventory.management.entity.constant.OrderStatus;
 import com.cams.inventory.management.mapper.ProductMapper;
-import com.cams.inventory.management.request.OrderDetailsRequest;
-import com.cams.inventory.management.request.OrderItemDetailsRequest;
-import com.cams.inventory.management.request.ProductDetailsRequest;
 import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.service.product.impl.ProductServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -69,34 +65,6 @@ class ProductServiceImplTest {
         Assertions.assertFalse(results.isEmpty());
         Assertions.assertEquals(1, results.size());
         Assertions.assertEquals("Apple", results.get(0).getName());
-    }
-
-    /**
-     * Tests the product summary details.
-     * It checks if the method correctly summarizes the total quantity of products ordered.
-     */
-    @Test
-    @DisplayName("Summarize product details based on order details requests")
-    void testProductSummaryDetails(){
-
-        ProductDetailsRequest apple = new ProductDetailsRequest(String.valueOf(UUID.randomUUID()), "Apple", "173546", BigDecimal.valueOf(10), 50);
-        ProductDetailsRequest banana = new ProductDetailsRequest(String.valueOf(UUID.randomUUID()),"Banana", "982651", BigDecimal.valueOf(5), 120);
-
-        OrderItemDetailsRequest orderItemDetailsRequest = new OrderItemDetailsRequest(String.valueOf(UUID.randomUUID()),2, apple);
-        OrderItemDetailsRequest orderItemDetailsRequest1 = new OrderItemDetailsRequest(String.valueOf(UUID.randomUUID()),3, banana);
-        OrderItemDetailsRequest orderItemDetailsRequest2 = new OrderItemDetailsRequest(String.valueOf(UUID.randomUUID()),1, apple);
-
-        OrderDetailsRequest orderDetailsRequest = new OrderDetailsRequest(String.valueOf(UUID.randomUUID()), OrderStatus.COMPLETED.name(), List.of(orderItemDetailsRequest, orderItemDetailsRequest1));
-        OrderDetailsRequest orderDetailsRequest1 = new OrderDetailsRequest(String.valueOf(UUID.randomUUID()), OrderStatus.COMPLETED.name(), List.of(orderItemDetailsRequest2));
-        OrderDetailsRequest orderDetailsRequest2 = new OrderDetailsRequest(String.valueOf(UUID.randomUUID()), OrderStatus.COMPLETED.name(), null);
-
-        List<OrderDetailsRequest> orders = List.of(orderDetailsRequest, orderDetailsRequest1, orderDetailsRequest2);
-
-        Map<String, BigDecimal> productSummaryResults = productServiceImpl.getProductSummaryDetails(orders);
-        Assertions.assertEquals(2, productSummaryResults.size());
-        Assertions.assertEquals(BigDecimal.valueOf(30), productSummaryResults.get("Apple"));
-        Assertions.assertEquals(BigDecimal.valueOf(15), productSummaryResults.get("Banana"));
-
     }
 
     /**

@@ -13,8 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -89,6 +91,33 @@ public class OrderController {
                 .success(hasOrderUpdated) // Indicate success or failure
                 .data(hasOrderUpdated ? List.of(updatedOrder) : Collections.emptyList()) // Include updated order if successful
                 .errors(hasOrderUpdated ? null : List.of("Order not found or could not be updated")) // Include error message if failed
+                .build();
+    }
+
+
+
+    /**
+     * Endpoint to retrieve a summary of product details based on the provided order details.
+     *
+     * @param orderId the orderId to calculate the product summary
+     * @return an ApiResponse containing the success status, product summary data, or error messages
+     */
+    @GetMapping("/v1/product-summary")
+    public ApiResponse<String, Map<String, BigDecimal>> getProductSummaryDetails(@RequestParam UUID orderId) {
+
+        logger.info("Retrieving product summary details for orderId {}", orderId);
+        // Call the service layer to retrieve the product summary details
+        Map<String, BigDecimal> productSummary = orderService.getProductSummaryDetails(orderId);
+
+        logger.info("Product summary retrieval completed. Summary size: {}", productSummary.size());
+        // Check if the product summary retrieval was successful
+        boolean hasSummaryRetrieved = !productSummary.isEmpty();
+
+        // Build and return the API response with success status, data, and errors
+        return ApiResponse.<String, Map<String, BigDecimal>>builder()
+                .success(hasSummaryRetrieved) // Indicate success or failure
+                .data(hasSummaryRetrieved ? productSummary : null) // Include product summary if successful
+                .errors(hasSummaryRetrieved ? null : Collections.singletonList("No product summary found for the given orders")) // Include error message if failed
                 .build();
     }
 }

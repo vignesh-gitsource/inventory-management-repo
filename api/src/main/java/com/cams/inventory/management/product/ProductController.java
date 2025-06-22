@@ -1,7 +1,6 @@
 package com.cams.inventory.management.product;
 
 import com.cams.inventory.management.dto.ProductDto;
-import com.cams.inventory.management.request.OrderDetailsRequest;
 import com.cams.inventory.management.request.ProductRequest;
 import com.cams.inventory.management.response.ApiResponse;
 import com.cams.inventory.management.service.product.ProductService;
@@ -14,10 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * REST controller for creating new products.
@@ -93,32 +90,6 @@ public class ProductController {
                 .success(hasLowStockProductsFound) // Set success to true if products were found
                 .data(lowStockProducts) // Include the list of low-stock products in the response
                 .errors(hasLowStockProductsFound ? null : Collections.singletonList("No products found with the given stock threshold")) // Add an error message if no products were found
-                .build();
-    }
-
-
-    /**
-     * Endpoint to retrieve a summary of product details based on the provided order details.
-     *
-     * @param orderDetailsRequests the list of order details requests to calculate the product summary
-     * @return an ApiResponse containing the success status, product summary data, or error messages
-     */
-    @PostMapping("/v1/product-summary")
-    public ApiResponse<String, Map<String, BigDecimal>> getProductSummaryDetails(@RequestBody List<OrderDetailsRequest> orderDetailsRequests) {
-
-        log.info("Retrieving product summary details for {} order requests", orderDetailsRequests.size());
-        // Call the service layer to retrieve the product summary details
-        Map<String, BigDecimal> productSummary = productService.getProductSummaryDetails(orderDetailsRequests);
-
-        log.info("Product summary retrieval completed. Summary size: {}", productSummary.size());
-        // Check if the product summary retrieval was successful
-        boolean hasSummaryRetrieved = !productSummary.isEmpty();
-
-        // Build and return the API response with success status, data, and errors
-        return ApiResponse.<String, Map<String, BigDecimal>>builder()
-                .success(hasSummaryRetrieved) // Indicate success or failure
-                .data(hasSummaryRetrieved ? productSummary : null) // Include product summary if successful
-                .errors(hasSummaryRetrieved ? null : Collections.singletonList("No product summary found for the given orders")) // Include error message if failed
                 .build();
     }
 }

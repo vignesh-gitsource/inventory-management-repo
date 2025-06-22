@@ -19,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ObjectUtils;
 
-import java.util.List;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Unit tests for the `OrderController` class.
@@ -196,5 +196,64 @@ class OrderControllerTest {
         Assertions.assertFalse(ObjectUtils.isEmpty(apiResponse.getErrors()));
         // Assert that the response contains no data
         Assertions.assertTrue(ObjectUtils.isEmpty(apiResponse.getData()));
+    }
+
+
+    /**
+     * Test case for the `getProductSummaryDetails` method in `ProductController`.
+     * Verifies that the method successfully retrieves product summary details.
+     */
+    @Test
+    @DisplayName("Summarize product details based on order details requests - Success")
+    void testProductSummaryDetails_success() {
+
+        UUID orderId = UUID.randomUUID();
+        // Mock the behavior of the productService to return product summary details
+        Mockito.when(orderService.getProductSummaryDetails(orderId))
+                .thenReturn(new HashMap<>(Map.of(
+                        "Apple", new BigDecimal("100.00")
+                )));
+
+        // Call the controller method and capture the response
+        ApiResponse<String, Map<String, BigDecimal>> response = orderController
+                .getProductSummaryDetails(orderId);
+
+        // Assert that the response is not null
+        Assertions.assertNotNull(response);
+        // Assert that the response contains data
+        Assertions.assertFalse(ObjectUtils.isEmpty(response));
+        // Assert that the response contains one product summary
+        Assertions.assertEquals(1, response.getData().size());
+        // Assert that the response contains no errors
+        Assertions.assertNull(response.getErrors());
+        // Assert that the product price matches the expected value
+        Assertions.assertEquals("100.00", response.getData().get("Apple").toString());
+    }
+
+    /**
+     * Test case for the `getProductSummaryDetails` method in `ProductController`.
+     * Verifies that the method handles failure scenarios correctly when no summary details are found.
+     */
+    @Test
+    @DisplayName("Summarize product details based on order details requests - failure")
+    void testProductSummaryDetails_failure() {
+
+        // Mock the behavior of the productService to return an empty map
+        Mockito.when(orderService.getProductSummaryDetails(UUID.randomUUID()))
+                .thenReturn(new HashMap<>());
+
+        // Call the controller method and capture the response
+        ApiResponse<String, Map<String, BigDecimal>> response = orderController
+                .getProductSummaryDetails(UUID.randomUUID());
+
+        // Assert that the response is not null
+        Assertions.assertNotNull(response);
+        // Assert that the response contains no data
+        Assertions.assertFalse(ObjectUtils.isEmpty(response));
+        Assertions.assertNull(response.getData());
+        // Assert that the response contains error messages
+        Assertions.assertFalse(response.getErrors().isEmpty());
+        // Assert that the error message matches the expected value
+        Assertions.assertEquals("No product summary found for the given orders", response.getErrors().get(0));
     }
 }

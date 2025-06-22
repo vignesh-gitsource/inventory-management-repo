@@ -18,7 +18,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the OrderService interface for managing orders.
@@ -113,6 +116,7 @@ public class OrderServiceImpl implements OrderService {
             orderItemEntity.setProduct(productEntity);
             orderItemEntity.setQuantity(orderItem.getQuantity());
             orderItemEntity.setOrder(orderEntity);
+            orderEntity.setStatus(OrderStatus.COMPLETED); // Set initial status to COMPLETED
 
             // Add the order item to order
             orderEntity.getItems().add(orderItemEntity);
@@ -146,5 +150,27 @@ public class OrderServiceImpl implements OrderService {
                     return orderMapper.transformOrderEntityToOrderDto(updatedOrderEntity);
                 })
                 .orElse(null);
+    }
+
+
+    /**
+     * Retrieves a summary of product details based on the provided order details requests.
+     *
+     * @param orderId orderId to calculate the product summary.
+     * @return A map where the key is the product identifier and the value is the total amount for that product.
+     */
+    @Override
+    public Map<String, BigDecimal> getProductSummaryDetails(UUID orderId) {
+
+        logger.debug("Calculating product summary details for orderId: {}", orderId);
+
+        OrderEntity orderEntity = orderDao.getOrderDetails(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + orderId));
+
+        // Filter out order details requests that do not have items and then group by product name
+        return orderEntity.getItems().stream()
+                .collect(Collectors.groupingBy(item -> item.getProduct().getName(),
+                        Collectors.reducing(BigDecimal.ZERO, item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())),
+                                BigDecimal::add)));
     }
 }
